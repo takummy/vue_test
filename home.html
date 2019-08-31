@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="home.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <!-- 下記の記述でVue.jsをインポートしている -->
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <!-- v-model="name"で、Vue.jsで設定したdataとHTMLのinput要素が同期する -->
+            名前：<input v-model="name">
+            コース：<input v-model="cource">
+            受講期：<input v-model="acceptance_period">
+            <br>
+            <!-- button v-on:click="addStudent"で、buttonがclickされた時に起動するメソッドを選択する -->
+            <button v-on:click="addStudent">入力した生徒を追加する</button>
+
+            <ul>
+                <!-- v-for="student in students" で、配列studentsを一つ一つ切り出して変数studentに代入している -->
+                <!-- v-bind:key="student.id"は、切り出された各要素の一意性を確保するために使う -->
+                <li v-for="student in students" v-bind:key="student.id">
+                    <!-- {{ }} のなかに書いた記述で、Vue.jsのデータの式展開が行える -->
+                    ID {{student.id}} /
+                    名前 {{student.name}} /
+                    コース {{student.cource}} /
+                    受講期 {{student.acceptance_period}}
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>　　
+
+<script>
+    new Vue({
+        // このelにHTMLのidを指定することで、そのidのDOMでVue.jsのインスタンスがインポートされる
+        el: '#app',
+        // dataは、定義されたVue.jsのインスタンスが持つ属性（値）
+        data: {
+        name: 'A山B郎',
+        cource: 'Webエンジニアコース',
+        acceptance_period: '2019年01月期',
+        default_last_id: 3,
+        students: [
+            { id: 1, name: '野呂浩良', cource: '機械学習コース', acceptance_period: '2019年01月期' },
+            { id: 2, name: '富永修司', cource: 'Webエンジニアコース', acceptance_period: '2017年11月期' },
+            { id: 3, name: '斉藤一起', cource: 'Webエンジニアコース', acceptance_period: '2017年11月期' }
+        ]
+        },
+        // methodsに、Vue.jsのインスタンスに使用させたいメソッドを記載する
+        methods: {
+            addStudent: function() {
+                this.students.push({
+                    id: this.default_last_id += 1,
+                    name: this.name,
+                    cource: this.cource,
+                    acceptance_period: this.acceptance_period
+                })
+                this.name = ""
+                this.cource = ""
+                this.acceptance_period = ""
+            }
+        }
+    })
+</script>
